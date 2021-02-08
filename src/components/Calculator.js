@@ -9,11 +9,12 @@ class Calculator extends React.Component {
     super(props);
     this.state = {
       displayArray: [],
-      displayString: 0
+      displayString: "0"
     }
+    this.forClick = this.forClick.bind(this);
   }
 
-  buttonsList = [
+  buttonsMap = [
     {
       id: "zero",
       displaySymbol: "0",
@@ -103,10 +104,31 @@ class Calculator extends React.Component {
       id: "decimal",
       displaySymbol: ".",
       formulaValue: ".",
-      category: "operator",
+      category: "numpad",
     },
+    {
+      id: "equals",
+      displaySymbol: "=",
+      formulaValue: "=",
+      category: "function"
+    },
+    {
+      id: "clear",
+      displaySymbol: "CLEAR",
+      formulaValue: "CLEAR",
+      category: "function"
+    }
   ];
 
+  forClick(btnId){
+    let clickedButton = this.buttonsMap.find(butt => butt.id === btnId);
+    console.log(`forClick sees clickedButton as ${clickedButton}`);
+    // console.log(`forClick thinks this is the data: ${data}`);
+    this.setState( {
+      displayString: this.state.displayString + clickedButton.displaySymbol
+    }
+    )
+  }
 
 
 
@@ -114,14 +136,17 @@ class Calculator extends React.Component {
 
     return (
       <div className="calc-container">
-        <Display />
+        <Display displayString={this.state.displayString}/>
         <div className="button-grid container">
           <div className="row g-2">
-            {this.buttonsList.map(butt => {
+            {this.buttonsMap.map(butt => {
               return (
                 <Button 
-              btnId={butt.id} 
-              displaySymbol={butt.displaySymbol} />
+                  btnId={butt.id}
+                  key={butt.id} 
+                  displaySymbol={butt.displaySymbol} 
+                  forClick={this.forClick}
+              />
               )
             })
             }

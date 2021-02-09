@@ -269,8 +269,12 @@ class Calculator extends React.Component {
             }
 
             console.log(`prior to processing loop ${i}, lastI is ${lastI}`);
+            
+            if (typeof curr === "number") {
+              return [...acc, curr];
+            }
             // if current value is a string, it's a stored number from currentValue, (so covert it to a number and add it to the accumulated array)
-            if (typeof curr === "string") {
+            else if (typeof curr === "string") {
               let convertedCurr = Number(curr);
               return [...acc, convertedCurr];
             } 
@@ -342,6 +346,13 @@ class Calculator extends React.Component {
 
         console.log("stringParse(filteredForString:");
         console.log(stringParse(filteredForString));
+        let answer = stringParse(filteredForString);
+
+        this.setState({
+          displayValue: answer,
+          formulaArray: [answer],
+          currentNumber: '0'
+        })
 
       //MDN SAMPLES
           // function looseJsonParse(obj){

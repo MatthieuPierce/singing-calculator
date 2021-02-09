@@ -9,9 +9,10 @@ class Calculator extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentValue: '0',
-      displayArray: [],
-      displayString: "0",
+      currentNumber: '0',
+      displayValue: '0',
+      formulaArray: [],
+      formulaString: "0",
       outputValue: '',
       outputString: ''
     }
@@ -22,9 +23,10 @@ class Calculator extends React.Component {
   }
 
   startingState = {
-    currentValue: '0',
-    displayArray: [],
-    displayString: "0",
+    currentNumber: '0',
+    displayValue: '0',
+    formulaArray: [],
+    formulaString: "0",
     outputValue: '',
     outputString: ''
   }
@@ -105,13 +107,13 @@ class Calculator extends React.Component {
     },
     {
       id: "multiply",
-      displaySymbol: "X",
+      displaySymbol: "x",
       formulaValue: "*",
       category: "operator",
     },
     {
       id: "divide",
-      displaySymbol: "/ ÷",
+      displaySymbol: "÷",
       formulaValue: "/",
       category: "operator",
     },
@@ -155,17 +157,19 @@ class Calculator extends React.Component {
   }
 
   handleNumeral(clickedButton){
-    // prevent adding extra zeros "at start of number", i.e., when currentValue is 0 or empty
-    if (this.state.currentValue === '0') {
+    // prevent adding extra zeros "at start of number", i.e., when currentNumber is 0 or empty
+    if (this.state.currentNumber === '0') {
       this.setState(
         {
-          currentValue: clickedButton.formulaValue
+          currentNumber: clickedButton.formulaValue,
+          displayValue: clickedButton.formulaValue,
         }
       );
     } else {
       this.setState(
         {
-          currentValue: this.state.currentValue + clickedButton.formulaValue
+          currentNumber: this.state.currentNumber + clickedButton.formulaValue,
+          displayValue: this.state.currentNumber + clickedButton.formulaValue,
         }
       );
     }
@@ -174,15 +178,15 @@ class Calculator extends React.Component {
   //   switch (clickedButton.id) {
   //     case "zero":
   //       // console.log('handleNumeral registered case zero');
-  //       console.log(`case zero and current value is ${this.state.currentValue}`)
-  //       if (this.state.currentValue === '0') {
-  //         console.log(`successful test for this.state.currentValue === '0'`);
+  //       console.log(`case zero and current value is ${this.state.currentNumber}`)
+  //       if (this.state.currentNumber === '0') {
+  //         console.log(`successful test for this.state.currentNumber === '0'`);
   //         break;
   //       } 
   //       else {
   //         this.setState(
   //           {
-  //             currentValue: this.state.currentValue + clickedButton.formulaValue
+  //             currentNumber: this.state.currentNumber + clickedButton.formulaValue
   //           }
   //         );
   //         break;
@@ -192,7 +196,7 @@ class Calculator extends React.Component {
   //       console.log('handleNumeral registered case default');
   //       this.setState(
   //         {
-  //           currentValue: this.state.currentValue + clickedButton.formulaValue
+  //           currentNumber: this.state.currentNumber + clickedButton.formulaValue
   //         }
   //         );
   //         break;
@@ -200,6 +204,16 @@ class Calculator extends React.Component {
   // }
 
   handleOperator(clickedButton){
+    // operators 1) signal the end of the currentNumber, which must be pushed to the formulaArray
+    // 2 the operator itself must be stored in the formulaArray for processing when equals is pressed
+    this.setState({
+      displayValue: clickedButton.displaySymbol,
+      formulaArray: [...this.state.formulaArray, this.state.currentNumber, clickedButton],
+    })
+    //currentNumber set back to base '0'
+    this.setState({
+      currentNumber: '0',
+    })
 
   }
 
@@ -208,13 +222,14 @@ class Calculator extends React.Component {
       case "decimal": {
         // check that no other decimals exist in the current value
         let regex = new RegExp(/\./, 'i')
-        if (regex.test(this.state.currentValue)) {
-          console.log("regex test triggered");
+        if (regex.test(this.state.currentNumber)) {
+          console.log("regex test for decimal triggered");
           return undefined;
           break;
         } else {
           this.setState({
-            currentValue: this.state.currentValue + clickedButton.formulaValue
+            currentNumber: this.state.currentNumber + clickedButton.formulaValue,
+            displayValue: this.state.currentNumber + clickedButton.formulaValue,
           });
           break;
         }
@@ -225,7 +240,131 @@ class Calculator extends React.Component {
         break;
       }
       case "equals": {
-        //
+        //User Story #9: In any order, I should be able to add, subtract, multiply and divide a chain of numbers of any length, and when I hit =, the correct result should be shown in the element with the id of display.
+
+        //at the time equals is triggered, formulaArray is an array of numbers and operands.
+
+        // move final currentNumber to formulaArray
+        // this.setState({
+        //   formulaArray: [...this.state.formulaArray, this.state.currentNumber],
+        // })
+        let fullFormulaArray = [...this.state.formulaArray, this.state.currentNumber];
+
+        console.log("fullFormulaArray:")
+        console.log(fullFormulaArray);
+
+        //reduce/filter through the formula array and remove any surplus consecutive operations:
+        let opFilteredArray = [...fullFormulaArray].reduce(
+          (acc, curr, i, arr) => {
+            console.log(`at the top of loop ${i}, acc is:`);
+            console.log(acc);
+
+            //snag last index of accululator so .length isn't called repeatedly
+            let lastI = 0;
+            if (i > 0) {
+              // console.log(`opFilteredArray recuder thinks i is now ${i}`);
+              // console.log(`opFilteredArray recuder thinks acc is now:`);
+              // console.log(acc);
+              lastI = (acc.length - 1);
+            }
+
+            console.log(`prior to processing loop ${i}, lastI is ${lastI}`);
+            // if current value is a string, it's a stored number from currentValue, (so covert it to a number and add it to the accumulated array)
+            if (typeof curr === "string") {
+              let convertedCurr = Number(curr);
+              return [...acc, convertedCurr];
+            } 
+            // handle objects, which will all be operands
+            else if (typeof curr == "object") {
+              // if this operand is the final item in the original array, ignore it
+              if (i === arr.length - 1) {
+                return [...acc];
+              }
+
+              // check if the prior value on the accumulator is also an operator
+              if (typeof acc[lastI] === "object" ) {
+
+                //if so, check if this could be a negative sign:
+                // check if the next value (referencing the original array) is a string/number AND whether this current sign is a subtract/minus sign
+                if (curr.id === "subtract" && typeof arr[i+1] === "string") {
+                  // if the next value is a string/number and the current value is a subtract, then return the array with both operators intact.
+                  // i.e. +-7   or --5  or *-2
+                  return [...acc, curr];
+                } else {
+                  // else these are part of an invalid sequence of operands, so only keep the most recent
+                  // ie +* or /+ or -/
+                  let trimmedAcc = acc.slice(0, lastI);
+                    return [...trimmedAcc, curr] 
+                  // MAJOR NOTE: this method fails to account for stacking negatives, 
+                  // ie. 5---7 = -2 but here it would resolve to 5--return 12
+
+                  //Implement Recursive Solution to 
+                  //test case 1: 5 + - 2
+                  //test case 2: 7 + - 3
+                  //test case 3: 10 * - - 3
+                  //test case 4: 13 - - * + - * - + - 6
+                  //test case 5: 13 - + * + - 6
+                  // text case 6: 10 +---*--- 3
+                  // text case 7: 10 ---*--- 3
+                }
+              } else {
+                return [...acc, curr]; 
+              }
+            } else {              
+              console.log("unexpected value in opFilteredArray")
+            }
+          }, []
+        );
+        console.log("opFilteredArray:");
+        console.log(opFilteredArray);
+
+        let filteredForString = [...opFilteredArray].reduce(
+          (acc, curr, i, arr) => {
+            switch (typeof curr) {
+              case "number": {
+                return `${acc} ${curr}`;
+                break;
+              }
+              case "object": {
+                return `${acc} ${curr.formulaValue}`;
+              }
+
+            }
+          }, ''
+        );
+
+        console.log("filteredForString:");
+        console.log(filteredForString);
+
+        function stringParse(string){
+          return Function(`'use strict'; return (${string})`)();
+        }    
+
+        console.log("stringParse(filteredForString:");
+        console.log(stringParse(filteredForString));
+
+      //MDN SAMPLES
+          // function looseJsonParse(obj){
+          //     return Function('"use strict";return (' + obj + ')')();
+          // }
+
+          // console.log(looseJsonParse(
+          //   "{a:(4-1), b:function(){}, c:new Date()}"
+          // ))
+
+        // let createFunction = () => {
+        //   return new Function()
+        // }
+
+        // function evaluateItAlready(string){
+        //   return 
+        // }
+
+
+
+        //User Story #13: If 2 or more operators are entered consecutively, the operation performed should be the last operator entered (excluding the negative (-) sign). For example, if 5 + * 7 = is entered, the result should be 35 (i.e. 5 * 7); if 5 * - 5 = is entered, the result should be -25 (i.e. 5 x (-5)).
+
+        //User Story #14: Pressing an operator immediately following = should start a new calculation that operates on the result of the previous evaluation.
 
       }
       default:
@@ -233,23 +372,15 @@ class Calculator extends React.Component {
     } 
   }
 
-
-
-  //   this.setState( {
-  //     displayString: this.state.displayString + clickedButton.displaySymbol
-  //   }
-  //   )
-  // }
-
-
-
   render() {
 
     return (
       <div className="calc-container">
         <Display 
-          displayString={this.state.displayString}
-          currentValue={this.state.currentValue}
+          formulaString={this.state.formulaString}
+          currentNumber={this.state.currentNumber}
+          displayValue={this.state.displayValue}
+          formulaArray={this.state.formulaArray}
           />
         <div className="button-grid container">
           <div className="row g-2">

@@ -9,12 +9,11 @@ class Calculator extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentNumber: '0',
+      currentNumber: '',
       displayValue: '0',
       formulaArray: [],
       formulaString: "0",
-      outputValue: '',
-      outputString: ''
+      priorResult: '',
     }
     this.forClick = this.forClick.bind(this);
     this.handleNumeral = this.handleNumeral.bind(this);
@@ -23,12 +22,11 @@ class Calculator extends React.Component {
   }
 
   startingState = {
-    currentNumber: '0',
+    currentNumber: '',
     displayValue: '0',
     formulaArray: [],
     formulaString: "0",
-    outputValue: '',
-    outputString: ''
+    priorResult: '',
   }
 
   buttonsMap = [
@@ -178,7 +176,7 @@ class Calculator extends React.Component {
     {
       id: "clear",
       displaySymbol: "C",
-      formulaValue: "CLEAR",
+      formulaValue: "c",
       category: "action",
       bootStyles: "btn-warning",
       bootPos: "order-first col-12"
@@ -206,7 +204,7 @@ class Calculator extends React.Component {
 
   handleNumeral(clickedButton){
     // prevent adding extra zeros "at start of number", i.e., when currentNumber is 0 or empty
-    if (this.state.currentNumber === '0') {
+    if (this.state.currentNumber === '0' | this.state.currentNumber === '') {
       this.setState(
         {
           currentNumber: clickedButton.formulaValue,
@@ -252,34 +250,54 @@ class Calculator extends React.Component {
   // }
 
   handleOperator(clickedButton){
-    // operators 1) signal the end of the currentNumber, which must be pushed to the formulaArray
-    // 2 the operator itself must be stored in the formulaArray for processing when equals is pressed
-    this.setState({
-      displayValue: clickedButton.displaySymbol,
-      formulaArray: [...this.state.formulaArray, this.state.currentNumber, clickedButton],
-    })
-    //currentNumber set back to base '0'
-    this.setState({
-      currentNumber: '0',
-    })
+    // User Story #14: Pressing an operator immediately following = should start a new calculation that operates on the result of the previous evaluation.
 
+    // if state.formulaArray is empty (no values entered yet) and state.priorResult is not an empty string, move it into the formula array followed by this operator, and clear out state.priorResult
+    if (this.state.formulaArray.length === 0 && this.state.priorResult !== '') {
+      this.setState({
+        displayValue: clickedButton.displaySymbol,
+        formulaArray: [this.state.priorResult, clickedButton],
+      })
+    }
+    // in all other cases, operators 1) signal the end of the currentNumber, which must be pushed to the formulaArray
+    // 2 the operator itself must be stored in the formulaArray for processing when equals is pressed
+    else {
+      this.setState({
+        displayValue: clickedButton.displaySymbol,
+        formulaArray: [...this.state.formulaArray, this.state.currentNumber, clickedButton],
+      });
+      //currentNumber set back to base '' (empty)
+      this.setState({
+        currentNumber: '',
+      });
+    }
   }
 
   handleAction(clickedButton){
     switch(clickedButton.id) {
       case "decimal": {
-        // check that no other decimals exist in the current value
-        let regex = new RegExp(/\./, 'i')
-        if (regex.test(this.state.currentNumber)) {
-          console.log("regex test for decimal triggered");
-          return undefined;
-          break;
-        } else {
+        // if the current number is empty (at start), supply a zero followed by a decimal
+        if (this.state.currentNumber === '') {
           this.setState({
-            currentNumber: this.state.currentNumber + clickedButton.formulaValue,
-            displayValue: this.state.currentNumber + clickedButton.formulaValue,
+            currentNumber: '0.',
+            displayValue: '0.'
           });
           break;
+        } else {
+          // check that no other decimals exist in the current value. If there are, break without changing anything.
+          let regex = new RegExp(/\./, 'i')
+          if (regex.test(this.state.currentNumber)) {
+            console.log("regex test for decimal triggered");
+            return undefined;
+            break;
+          } else {
+            // otherwise, you're in the middle of an as-of-yet undecimaled number, so tag on that decimal, champ!
+            this.setState({
+              currentNumber: this.state.currentNumber + clickedButton.formulaValue,
+              displayValue: this.state.currentNumber + clickedButton.formulaValue,
+            });
+            break;
+          }
         }
       }
       case "clear": {
@@ -304,8 +322,8 @@ class Calculator extends React.Component {
         //reduce/filter through the formula array and remove any surplus consecutive operations:
         let opFilteredArray = [...fullFormulaArray].reduce(
           (acc, curr, i, arr) => {
-            console.log(`at the top of loop ${i}, acc is:`);
-            console.log(acc);
+            // console.log(`at the top of loop ${i}, acc is:`);
+            // console.log(acc);
 
             //snag last index of accululator so .length isn't called repeatedly
             let lastI = 0;
@@ -316,8 +334,8 @@ class Calculator extends React.Component {
               lastI = (acc.length - 1);
             }
 
-            console.log(`prior to processing loop ${i}, lastI is ${lastI}`);
-            
+            // console.log(`prior to processing loop ${i}, lastI is ${lastI}`);
+            //if a number is in the formulaArray, most likely from a prior answer (or a javascript equivalency I missed), pass it into the accumulating array
             if (typeof curr === "number") {
               return [...acc, curr];
             }
@@ -398,8 +416,10 @@ class Calculator extends React.Component {
 
         this.setState({
           displayValue: answer,
-          formulaArray: [answer],
-          currentNumber: '0'
+          formulaArray: [],
+          currentNumber: '',
+          priorResult: answer,
+          formulaString: "0",
         })
 
       //MDN SAMPLES
@@ -452,6 +472,7 @@ class Calculator extends React.Component {
                   forClick={this.forClick}
                   bootStyles={butt.bootStyles}
                   bootPos={butt.bootPos}
+                  formulaValue={butt.formulaValue}
               />
               )
             })

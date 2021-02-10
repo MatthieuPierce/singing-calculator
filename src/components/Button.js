@@ -1,4 +1,6 @@
 import React from 'react';
+import KeyboardEventHandler from 'react-keyboard-event-handler';
+
 
 
 class Button extends React.Component {
@@ -14,7 +16,10 @@ class Button extends React.Component {
   }
 
   render() {
-    const { btnId, displaySymbol, bootStyles, bootPos } = this.props;
+    const { btnId, displaySymbol, bootStyles, bootPos, formulaValue } = this.props;
+    const keysToHandle = (formulaValue === "=")
+                          ?  [formulaValue, "enter"]
+                          : [formulaValue];
 
     return (
       <div className={`outer-button-div col 
@@ -26,15 +31,14 @@ class Button extends React.Component {
         value={displaySymbol}
         onClick={this.handleClick}      
           > 
-          {/* <button 
-            className="btn btn-lg btn-outline-primary" 
-            id={btnId} 
-            value={displaySymbol}
-            onClick={this.handleClick}
-            > */}
-            {displaySymbol}
-            
-          {/* </button> */}
+        <KeyboardEventHandler
+          handleKeys={keysToHandle}
+          handleFocusableElements={true}
+          onKeyEvent={(key, e) => {
+            // console.log(`do something (handleClick) upon keydown event of ${key}`);
+            this.handleClick();
+          }} />
+        {displaySymbol}
         </div>
       </div>
     )

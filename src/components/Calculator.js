@@ -33,16 +33,66 @@ class Calculator extends React.Component {
 
   buttonsMap = [
     {
-      id: "zero",
-      displaySymbol: "0",
-      formulaValue: "0",
+      id: "seven",
+      displaySymbol: "7",
+      formulaValue: "7",
       category: "numeral",
+      bootStyles: "btn-outline-primary col",
+      bootPos: "order-2 col-4"
+
+    },
+    {
+      id: "eight",
+      displaySymbol: "8",
+      formulaValue: "8",
+      category: "numeral",
+      bootStyles: "btn-outline-primary col",
+      bootPos: "order-2 col-4"
+
+    },
+    {
+      id: "nine",
+      displaySymbol: "9",
+      formulaValue: "9",
+      category: "numeral",
+      bootStyles: "btn-outline-primary col",
+      bootPos: "order-2 col-4"
+
+    },
+    {
+      id: "four",
+      displaySymbol: "4",
+      formulaValue: "4",
+      category: "numeral",
+      bootStyles: "btn-outline-primary col",
+      bootPos: "order-2 col-4"
+
+    },
+    {
+      id: "five",
+      displaySymbol: "5",
+      formulaValue: "5",
+      category: "numeral",
+      bootStyles: "btn-outline-primary col",
+      bootPos: "order-2 col-4"
+
+    },
+    {
+      id: "six",
+      displaySymbol: "6",
+      formulaValue: "6",
+      category: "numeral",
+      bootStyles: "btn-outline-primary col",
+      bootPos: "order-2 col-4"
+
     },
     {
       id: "one",
       displaySymbol: "1",
       formulaValue: "1",
       category: "numeral",
+      bootStyles: "btn-outline-primary",
+      bootPos: "order-2 col-4"
 
     },
     {
@@ -50,90 +100,88 @@ class Calculator extends React.Component {
       displaySymbol: "2",
       formulaValue: "2",
       category: "numeral",
+      bootStyles: "btn-outline-primary",
+      bootPos: "order-2 col-4"
+
     },
     {
       id: "three",
       displaySymbol: "3",
       formulaValue: "3",
       category: "numeral",
+      bootStyles: "btn-outline-primary",
+      bootPos: "order-2 col-4"
+
     },
     {
-      id: "four",
-      displaySymbol: "4",
-      formulaValue: "4",
+      id: "zero",
+      displaySymbol: "0",
+      formulaValue: "0",
       category: "numeral",
-    },
-    {
-      id: "five",
-      displaySymbol: "5",
-      formulaValue: "5",
-      category: "numeral",
-    },
-    {
-      id: "six",
-      displaySymbol: "6",
-      formulaValue: "6",
-      category: "numeral",
-    },
-    {
-      id: "seven",
-      displaySymbol: "7",
-      formulaValue: "7",
-      category: "numeral",
-    },
-    {
-      id: "eight",
-      displaySymbol: "8",
-      formulaValue: "8",
-      category: "numeral",
-    },
-    {
-      id: "nine",
-      displaySymbol: "9",
-      formulaValue: "9",
-      category: "numeral",
-    },
-    {
-      id: "add",
-      displaySymbol: "+",
-      formulaValue: "+",
-      category: "operator",
-    },
-    {
-      id: "subtract",
-      displaySymbol: "-",
-      formulaValue: "-",
-      category: "operator",
-    },
-    {
-      id: "multiply",
-      displaySymbol: "x",
-      formulaValue: "*",
-      category: "operator",
-    },
-    {
-      id: "divide",
-      displaySymbol: "÷",
-      formulaValue: "/",
-      category: "operator",
+      bootStyles: "btn-outline-primary",
+      bootPos: "order-2 col-6"
     },
     {
       id: "decimal",
       displaySymbol: ".",
       formulaValue: ".",
       category: "action",
+      bootStyles: "btn-outline-secondary",
+      bootPos: "order-3 col-2"
+
     },
+    {
+      id: "add",
+      displaySymbol: "+",
+      formulaValue: "+",
+      category: "operator",
+      bootStyles: "btn-outline-secondary",
+      bootPos: "col-6"
+
+    },
+    {
+      id: "subtract",
+      displaySymbol: "-",
+      formulaValue: "-",
+      category: "operator",
+      bootStyles: "btn-outline-secondary",
+      bootPos: "col-6"
+
+    },
+    {
+      id: "multiply",
+      displaySymbol: "x",
+      formulaValue: "*",
+      category: "operator",
+      bootStyles: "btn-outline-secondary",
+      bootPos: "col-6"
+
+    },
+    {
+      id: "divide",
+      displaySymbol: "÷",
+      formulaValue: "/",
+      category: "operator",
+      bootStyles: "btn-outline-secondary",
+      bootPos: "col-6"
+
+    },
+    
     {
       id: "equals",
       displaySymbol: "=",
       formulaValue: "=",
-      category: "action"
+      category: "action",
+      bootStyles: "btn-secondary",
+      bootPos: "col-4 order-last"
     },
     {
       id: "clear",
-      displaySymbol: "CLEAR",
+      displaySymbol: "C",
       formulaValue: "CLEAR",
-      category: "action"
+      category: "action",
+      bootStyles: "btn-warning",
+      bootPos: "order-first col-12"
     }
   ];
 
@@ -393,8 +441,8 @@ class Calculator extends React.Component {
           displayValue={this.state.displayValue}
           formulaArray={this.state.formulaArray}
           />
-        <div className="button-grid container">
-          <div className="row g-2">
+        <div className="container-sm">
+          <div className="row row-cols-4 g-1 justify-content-md-center">
             {this.buttonsMap.map(butt => {
               return (
                 <Button 
@@ -402,6 +450,8 @@ class Calculator extends React.Component {
                   key={butt.id} 
                   displaySymbol={butt.displaySymbol} 
                   forClick={this.forClick}
+                  bootStyles={butt.bootStyles}
+                  bootPos={butt.bootPos}
               />
               )
             })

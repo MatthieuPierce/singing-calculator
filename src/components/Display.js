@@ -1,34 +1,38 @@
 import React from 'react';
 
-const Display = ({formulaString, currentNumber, displayValue, formulaArray}) => {
+const Display = ({formulaString, currentNumber, displayValue, formulaArray, priorResult, priorString}) => {
   return (
-    <div className="display text-end display-2 border px-4 py-1 my-2" id="display">
-      <h3>Formula array (and currentNumber):
+    <div className="text-end display-2 border px-4 py-1 my-2" id="display">
+      <h3 className="formula-array-and-current-number">FA: 
         <ul className="list-inline">
           {formulaArray.map((val, index) => {
-            if (typeof val === "string") {
+            if (typeof val === "string" | typeof val === "number") {
               return <li className="list-inline-item" key={index}>{val}</li>;
             } else {
               return <li className="list-inline-item text-secondary" key={index}>{val.displaySymbol}</li>;
             }
           })}
-          <li 
-            key="itsAlwaysTheCurrentNumber"
-            className="list-inline-item">
-              {(currentNumber !== "0")
-                ? currentNumber
-                : ""}
-          </li>
+          {(currentNumber !== "") &&
+            <li 
+              key="itsAlwaysTheCurrentNumber01"
+              className="list-inline-item text-danger">
+              {currentNumber}
+            </li>
+          }
+          {(priorResult) &&
+            <li 
+            key="resultIfAny"
+            className="list-inline-item text-success">
+             {priorString} = {priorResult}
+            </li>
+          }
         </ul>
       </h3>
-      <h3>Formula string: 
-        <code>{formulaString} </code>
-      </h3>
-      <h3>Current Number:
+      {/* <h3>Current Number:
           <code>{currentNumber}</code>
-      </h3>
-      <h3>Display value:
-        <code>{displayValue}</code>
+      </h3> */}
+      <h3 className="display text-primary">
+        {displayValue}
       </h3>
     </div>
   )

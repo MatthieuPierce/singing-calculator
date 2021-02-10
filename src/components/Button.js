@@ -18,10 +18,17 @@ class Button extends React.Component {
   }
 
   focusOnKeypress() {
+    this.buttonDiv.current.focus();
     this.buttonDiv.current.className = `btn btn-lg w-100 px-1 py-2 fs-1 ${this.props.bootStyles} active`;
-    setTimeout(() => {
-      this.buttonDiv.current.className = `btn btn-lg w-100 px-1 py-2 fs-1 ${this.props.bootStyles}`;
-    }, 100);
+    const styleTimer = () => {
+      setTimeout( () => {
+        this.buttonDiv.current.className = `btn btn-lg w-100 px-1 py-2 fs-1 ${this.props.bootStyles}`;
+      }, 100);
+    }
+    const timerId = styleTimer();
+    return () => {
+      clearTimeout(timerId);
+    }
   }
 
 

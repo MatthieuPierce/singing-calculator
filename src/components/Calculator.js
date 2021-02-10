@@ -231,28 +231,50 @@ class Calculator extends React.Component {
   }
 
   handleOperator(clickedButton){
-    // User Story #14: Pressing an operator immediately following = should start a new calculation that operates on the result of the previous evaluation.
+    // if state.formulaArray is empty (no values entered yet) and currentNumber is still empty, we are at the start of a new operation
+    if (this.state.formulaArray.length === 0 && this.state.currentNumber === '') {
 
-    // if state.formulaArray is empty (no values entered yet) and state.priorResult is not an empty string, move it into the formula array followed by this operator, and clear out state.priorResult
-    if (this.state.formulaArray.length === 0 && this.state.priorResult !== '') {
-      this.setState({
-        displayValue: clickedButton.displaySymbol,
-        formulaArray: [this.state.priorResult, clickedButton],
-        priorResult: '',
-        priorString: ''
-      })
-    }
-    // in all other cases, operators 1) signal the end of the currentNumber, which must be pushed to the formulaArray
-    // 2 the operator itself must be stored in the formulaArray for processing when equals is pressed
+      // IF there's no priorResult, by pressing an operand first, the user is choosing to act on the initial startingDisplay of 0: push "0" followed by operand object to formulaArray
+      if (this.state.priorResult === '') {
+        this.setState({
+          displayValue: clickedButton.displaySymbol,
+          formulaArray: ["0", clickedButton],
+        });
+      }
+      
+      //ELSE IF state.priorResult is not an empty string, user has chosen to act on the prior result per 
+      // User Story #14: Pressing an operator immediately following = should start a new calculation that operates on the result of the previous evaluation.
+      // move priorResult into the formula array followed by this operator, and clear out state.priorResult and priorString
+      else if (this.state.priorResult !== '') {
+        this.setState({
+          displayValue: clickedButton.displaySymbol,
+          formulaArray: [this.state.priorResult, clickedButton],
+          priorResult: '',
+          priorString: ''
+        })
+      }
+    } 
+    // ELSE this is not the start of the formula array, and/or user has already started building a currentNumber. Carry on.
     else {
-      this.setState({
-        displayValue: clickedButton.displaySymbol,
-        formulaArray: [...this.state.formulaArray, this.state.currentNumber, clickedButton],
-      });
-      //currentNumber set back to base '' (empty)
-      this.setState({
-        currentNumber: '',
-      });
+      // IF the currentNumber is empty (string value '') just push the operator object
+      if (this.state.currentNumber === '') {
+        this.setState({
+          displayValue: clickedButton.displaySymbol,
+          formulaArray: [...this.state.formulaArray, clickedButton],
+        });
+      } 
+      // ELSE the currentNumber has been built to some extent, and this operand singnals the end of currentNumber-- currentNumber needs to be pushed to the formulaArray as a string (for later processing when equals is pressed); 
+      //followed by pushing the operator itself to formulaArray
+      else {
+        this.setState({
+          displayValue: clickedButton.displaySymbol,
+          formulaArray: [...this.state.formulaArray, this.state.currentNumber, clickedButton],
+        });
+        // also set currentNumber back to base '' (empty)
+        this.setState({
+          currentNumber: '',
+        });
+      }
     }
   }
 
@@ -262,7 +284,10 @@ class Calculator extends React.Component {
     //at the time equals is triggered, formulaArray is an array of numbers and operands.
 
     // move final currentNumber to a fullFormulaArray (slightly modified this.state.formulaArray to avoid setting state early)
-    let fullFormulaArray = [...this.state.formulaArray, this.state.currentNumber];
+    // n.b. if final currentValue is empty, supply "0" to avoid evaluation errors at the end
+    let fullFormulaArray = (this.state.currentNumber === '')
+                            ? [...this.state.formulaArray, "0"]
+                            : [...this.state.formulaArray, this.state.currentNumber];
     console.log("fullFormulaArray:");
     console.log(fullFormulaArray);
 

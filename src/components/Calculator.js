@@ -44,6 +44,7 @@ class Calculator extends React.Component {
       bootStyles: "btn-outline-primary col",
       bootPos: "order-2 col-4",
       audioNum: 47,
+      noteString: 'C4',
 
     },
     {
@@ -54,6 +55,7 @@ class Calculator extends React.Component {
       bootStyles: "btn-outline-primary col",
       bootPos: "order-2 col-4",
       audioNum: 48,
+      noteString: 'C#4',
 
     },
     {
@@ -64,6 +66,7 @@ class Calculator extends React.Component {
       bootStyles: "btn-outline-primary col",
       bootPos: "order-2 col-4",
       audioNum: 49,
+      noteString: 'D4',
 
     },
     {
@@ -74,6 +77,7 @@ class Calculator extends React.Component {
       bootStyles: "btn-outline-primary col",
       bootPos: "order-2 col-4",
       audioNum: 44,
+      noteString: 'D5',
 
     },
     {
@@ -84,6 +88,7 @@ class Calculator extends React.Component {
       bootStyles: "btn-outline-primary col",
       bootPos: "order-2 col-4",
       audioNum: 45,
+      noteString: 'D#4',
 
     },
     {
@@ -94,6 +99,7 @@ class Calculator extends React.Component {
       bootStyles: "btn-outline-primary col",
       bootPos: "order-2 col-4",
       audioNum: 46,
+      noteString: 'E4',
 
     },
     {
@@ -104,6 +110,7 @@ class Calculator extends React.Component {
       bootStyles: "btn-outline-primary",
       bootPos: "order-2 col-4",
       audioNum: 41,
+      noteString: 'E5',
 
     },
     {
@@ -114,6 +121,7 @@ class Calculator extends React.Component {
       bootStyles: "btn-outline-primary",
       bootPos: "order-2 col-4",
       audioNum: 42,
+      noteString: 'F4',
 
     },
     {
@@ -124,6 +132,7 @@ class Calculator extends React.Component {
       bootStyles: "btn-outline-primary",
       bootPos: "order-2 col-4",
       audioNum: 43,
+      noteString: 'F#4',
 
     },
     {
@@ -134,6 +143,7 @@ class Calculator extends React.Component {
       bootStyles: "btn-outline-primary",
       bootPos: "order-2 col-6",
       audioNum: 40,
+      noteString: 'G4',
     },
     {
       id: "decimal",
@@ -143,6 +153,7 @@ class Calculator extends React.Component {
       bootStyles: "btn-outline-secondary",
       bootPos: "order-3 col-2",
       audioNum: 39,
+      noteString: 'G5',
 
     },
     {
@@ -153,6 +164,7 @@ class Calculator extends React.Component {
       bootStyles: "btn-outline-secondary",
       bootPos: "col-6",
       audioNum: 51,
+      noteString: 'G#3',
 
     },
     {
@@ -163,6 +175,7 @@ class Calculator extends React.Component {
       bootStyles: "btn-outline-secondary",
       bootPos: "col-6",
       audioNum: 52,
+      noteString: 'A3',
 
     },
     {
@@ -173,6 +186,7 @@ class Calculator extends React.Component {
       bootStyles: "btn-outline-secondary",
       bootPos: "col-6",
       audioNum: 53,
+      noteString: 'A4',
 
     },
     {
@@ -183,6 +197,7 @@ class Calculator extends React.Component {
       bootStyles: "btn-outline-secondary",
       bootPos: "col-6",
       audioNum: 54,
+      noteString: 'A#3',
 
     },
     
@@ -194,6 +209,7 @@ class Calculator extends React.Component {
       bootStyles: "btn-secondary",
       bootPos: "col-4 order-last",
       audioNum: 55,
+      noteString: 'C4',
     },
     {
       id: "clear",
@@ -203,6 +219,7 @@ class Calculator extends React.Component {
       bootStyles: "btn-warning",
       bootPos: "order-first col-12",
       audioNum: 56,
+      noteString: 'B3',
     }
   ];
 
@@ -418,10 +435,10 @@ class Calculator extends React.Component {
 
     this.setState({
       currentNumber: '',
-      displayValue: answer,
+      displayValue: `${answer}`,
       formulaArray: [],
-      priorResult: answer,
-      priorString: filteredForString
+      priorResult: `${answer}`,
+      priorString: filteredForString,
     });
 
     // MDN SAMPLES
@@ -491,8 +508,7 @@ class Calculator extends React.Component {
           priorResult={this.state.priorResult}
           priorString={this.state.priorString}
           />
-        <div className="container-sm">
-          <div className="row row-cols-4 g-1 justify-content-md-center">
+          <div className="row row-cols-4 g-1 mx-2 my-3 justify-content-md-center">
             {this.buttonsMap.map(butt => {
               return (
                 <Button 
@@ -507,9 +523,7 @@ class Calculator extends React.Component {
               )
             })
             }
-          </div>
-        </div>
-        
+          </div>        
 
       </div>
     )

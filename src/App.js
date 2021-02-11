@@ -9,7 +9,7 @@ import Calculator from './components/Calculator';
 
 function App() {
   return (
-    <div className="App container" >
+    <div className="App container-sm" >
       <header className="App-header">
         {/* <img src={logo} className="App-logo" alt="logo" /> */}
         {/* <a
@@ -19,7 +19,7 @@ function App() {
           rel="noopener noreferrer"
         > </a> */}
           <h1 className="display-5">Singing Calculator</h1>
-          <p>Using bog-standard Bootstrap 5 for components.</p>
+          <p>Uses React, Bootstrap 5, and the Web Audio API oscillator to create audio effects on the fly.</p>
       </header>
       <Calculator />
       {/* <ReactFCCtest /> */}

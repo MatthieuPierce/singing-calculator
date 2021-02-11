@@ -1,7 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
 import Calculator from './components/Calculator';
+
 // import Display from './components/Display';
+// import ReactFCCtest from 'react-fcctest';
+
 
 
 function App() {
@@ -19,6 +22,7 @@ function App() {
           <p>Using bog-standard Bootstrap 5 for components.</p>
       </header>
       <Calculator />
+      {/* <ReactFCCtest /> */}
     </div>
   );
 }

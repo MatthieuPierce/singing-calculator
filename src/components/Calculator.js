@@ -2,6 +2,8 @@ import { findAllByDisplayValue } from '@testing-library/react';
 import React from 'react';
 import Button from './Button';
 import Display from './Display';
+import AudioComp from './AudioComp';
+
 
 
 
@@ -13,7 +15,8 @@ class Calculator extends React.Component {
       displayValue: '0',
       formulaArray: [],
       priorResult: '',
-      priorString: ''
+      priorString: '',
+      lastButton: '',
     }
     this.forClick = this.forClick.bind(this);
     this.handleNumeral = this.handleNumeral.bind(this);
@@ -28,7 +31,8 @@ class Calculator extends React.Component {
     displayValue: '0',
     formulaArray: [],
     priorResult: '',
-    priorString: ''
+    priorString: '',
+    lastButton: '',
   }
 
   buttonsMap = [
@@ -38,7 +42,8 @@ class Calculator extends React.Component {
       formulaValue: "7",
       category: "numeral",
       bootStyles: "btn-outline-primary col",
-      bootPos: "order-2 col-4"
+      bootPos: "order-2 col-4",
+      audioNum: 47,
 
     },
     {
@@ -47,7 +52,8 @@ class Calculator extends React.Component {
       formulaValue: "8",
       category: "numeral",
       bootStyles: "btn-outline-primary col",
-      bootPos: "order-2 col-4"
+      bootPos: "order-2 col-4",
+      audioNum: 48,
 
     },
     {
@@ -56,7 +62,8 @@ class Calculator extends React.Component {
       formulaValue: "9",
       category: "numeral",
       bootStyles: "btn-outline-primary col",
-      bootPos: "order-2 col-4"
+      bootPos: "order-2 col-4",
+      audioNum: 49,
 
     },
     {
@@ -65,7 +72,8 @@ class Calculator extends React.Component {
       formulaValue: "4",
       category: "numeral",
       bootStyles: "btn-outline-primary col",
-      bootPos: "order-2 col-4"
+      bootPos: "order-2 col-4",
+      audioNum: 44,
 
     },
     {
@@ -74,7 +82,8 @@ class Calculator extends React.Component {
       formulaValue: "5",
       category: "numeral",
       bootStyles: "btn-outline-primary col",
-      bootPos: "order-2 col-4"
+      bootPos: "order-2 col-4",
+      audioNum: 45,
 
     },
     {
@@ -83,7 +92,8 @@ class Calculator extends React.Component {
       formulaValue: "6",
       category: "numeral",
       bootStyles: "btn-outline-primary col",
-      bootPos: "order-2 col-4"
+      bootPos: "order-2 col-4",
+      audioNum: 46,
 
     },
     {
@@ -92,7 +102,8 @@ class Calculator extends React.Component {
       formulaValue: "1",
       category: "numeral",
       bootStyles: "btn-outline-primary",
-      bootPos: "order-2 col-4"
+      bootPos: "order-2 col-4",
+      audioNum: 41,
 
     },
     {
@@ -101,7 +112,8 @@ class Calculator extends React.Component {
       formulaValue: "2",
       category: "numeral",
       bootStyles: "btn-outline-primary",
-      bootPos: "order-2 col-4"
+      bootPos: "order-2 col-4",
+      audioNum: 42,
 
     },
     {
@@ -110,7 +122,8 @@ class Calculator extends React.Component {
       formulaValue: "3",
       category: "numeral",
       bootStyles: "btn-outline-primary",
-      bootPos: "order-2 col-4"
+      bootPos: "order-2 col-4",
+      audioNum: 43,
 
     },
     {
@@ -119,7 +132,8 @@ class Calculator extends React.Component {
       formulaValue: "0",
       category: "numeral",
       bootStyles: "btn-outline-primary",
-      bootPos: "order-2 col-6"
+      bootPos: "order-2 col-6",
+      audioNum: 40,
     },
     {
       id: "decimal",
@@ -127,7 +141,8 @@ class Calculator extends React.Component {
       formulaValue: ".",
       category: "action",
       bootStyles: "btn-outline-secondary",
-      bootPos: "order-3 col-2"
+      bootPos: "order-3 col-2",
+      audioNum: 39,
 
     },
     {
@@ -136,7 +151,8 @@ class Calculator extends React.Component {
       formulaValue: "+",
       category: "operator",
       bootStyles: "btn-outline-secondary",
-      bootPos: "col-6"
+      bootPos: "col-6",
+      audioNum: 51,
 
     },
     {
@@ -145,7 +161,8 @@ class Calculator extends React.Component {
       formulaValue: "-",
       category: "operator",
       bootStyles: "btn-outline-secondary",
-      bootPos: "col-6"
+      bootPos: "col-6",
+      audioNum: 52,
 
     },
     {
@@ -154,7 +171,8 @@ class Calculator extends React.Component {
       formulaValue: "*",
       category: "operator",
       bootStyles: "btn-outline-secondary",
-      bootPos: "col-6"
+      bootPos: "col-6",
+      audioNum: 53,
 
     },
     {
@@ -163,7 +181,8 @@ class Calculator extends React.Component {
       formulaValue: "/",
       category: "operator",
       bootStyles: "btn-outline-secondary",
-      bootPos: "col-6"
+      bootPos: "col-6",
+      audioNum: 54,
 
     },
     
@@ -173,7 +192,8 @@ class Calculator extends React.Component {
       formulaValue: "=",
       category: "action",
       bootStyles: "btn-secondary",
-      bootPos: "col-4 order-last"
+      bootPos: "col-4 order-last",
+      audioNum: 55,
     },
     {
       id: "clear",
@@ -181,12 +201,16 @@ class Calculator extends React.Component {
       formulaValue: "c",
       category: "action",
       bootStyles: "btn-warning",
-      bootPos: "order-first col-12"
+      bootPos: "order-first col-12",
+      audioNum: 56,
     }
   ];
 
   forClick(btnId){
     let clickedButton = this.buttonsMap.find(butt => butt.id === btnId);
+    this.setState({
+      lastButton: clickedButton
+    })
     // console.log(`forClick sees clickedButton as:`);
     // console.log(clickedButton);
     // console.log(`forClick thinks this is the data: ${data}`);
@@ -459,6 +483,7 @@ class Calculator extends React.Component {
 
     return (
       <div className="calc-container">
+        <AudioComp lastButton={this.state.lastButton}/>
         <Display 
           currentNumber={this.state.currentNumber}
           displayValue={this.state.displayValue}

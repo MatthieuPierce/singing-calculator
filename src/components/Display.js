@@ -2,8 +2,8 @@ import React from 'react';
 
 const Display = ({formulaString, currentNumber, displayValue, formulaArray, priorResult, priorString}) => {
   return (
-    <div className="text-end display-2 border px-4 py-1 my-2" id="display">
-      <h3 className="formula-array-and-current-number">FA: 
+    <div className="text-end display-2 border px-4 py-1 my-2" >
+      <h3 className="formula-array-and-current-number">
         <ul className="list-inline">
           {formulaArray.map((val, index) => {
             if (typeof val === "string" | typeof val === "number") {
@@ -31,7 +31,7 @@ const Display = ({formulaString, currentNumber, displayValue, formulaArray, prio
       {/* <h3>Current Number:
           <code>{currentNumber}</code>
       </h3> */}
-      <h3 className="display text-primary">
+      <h3 className="display text-primary" id="display">
         {displayValue}
       </h3>
     </div>

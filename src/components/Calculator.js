@@ -332,7 +332,9 @@ class Calculator extends React.Component {
     console.log("fullFormulaArray:");
     console.log(fullFormulaArray);
 
-    //reduce/filter through the formula array and remove any surplus consecutive operations:
+    //reduce/filter through the formula array and remove any surplus consecutive operations per
+    // User Story #13: If 2 or more operators are entered consecutively, the operation performed should be the last operator entered
+    // (excluding the negative (-) sign). For example, if 5 + * 7 = is entered, the result should be 35 (i.e. 5 * 7); if 5 * - 5 = is entered, the result should be -25 (i.e. 5 x (-5)).
     let opFilteredArray = [...fullFormulaArray].reduce(
       (acc, curr, i, arr) => {
         // console.log(`at the top of loop ${i}, acc is:`);
@@ -418,17 +420,14 @@ class Calculator extends React.Component {
       }, ''
     );
 
-    console.log("filteredForString:");
-    console.log(filteredForString);
+    // stringParse is a function to return the result of an inner function that returns (and therefore evaluates) the input string
+    // i.e., we're relying on javascript to evaluate the entire set of calculator arguments at once per
+    //User Story #14: Pressing an operator immediately following = should start a new calculation that operates on the result of the previous evaluation.
 
-    // stringParse is function to return the result of an inner function that returns (and therefore evaluates) the input string
     function stringParse(string){
       return Function(`'use strict'; return (${string})`)();
     }    
 
-    console.log("stringParse(filteredForString:");
-    console.log(stringParse(filteredForString));
-    
     // that evaluation is the final answer, so supply it to state's display, store answer in priorAnswer, save the filteredForString in priorString  and reset rest of state
     let answer = stringParse(filteredForString);
     console.log(`answer: ${answer}`);
@@ -440,18 +439,7 @@ class Calculator extends React.Component {
       priorResult: `${answer}`,
       priorString: filteredForString,
     });
-
-    // MDN SAMPLES
-    // function looseJsonParse(obj){
-    //     return Function('"use strict";return (' + obj + ')')();
-    // }
-    // console.log(looseJsonParse(
-    //   "{a:(4-1), b:function(){}, c:new Date()}"
-    // ))
-
-    //User Story #13: If 2 or more operators are entered consecutively, the operation performed should be the last operator entered (excluding the negative (-) sign). For example, if 5 + * 7 = is entered, the result should be 35 (i.e. 5 * 7); if 5 * - 5 = is entered, the result should be -25 (i.e. 5 x (-5)).
-
-    //User Story #14: Pressing an operator immediately following = should start a new calculation that operates on the result of the previous evaluation.
+   
   }
 
   handleAction(clickedButton){

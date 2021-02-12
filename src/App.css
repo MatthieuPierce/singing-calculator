@@ -1,5 +1,11 @@
 .App {
   text-align: center;
+  margin: 1rem;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: -0.25rem 0.25rem hsla(0, 0%, 0%, 0.7);
+  /* outline: black solid 2px; */
 }
 
 /* .App-logo {

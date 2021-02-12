@@ -1,12 +1,14 @@
 import React from 'react';
-import {noteValues} from '../notevalues.json';
+import {noteValues} from '../noteValues.json';
 // import {GuitarFuzz} from '../waveTables.json';
 
 class AudioComp extends React.Component {
 
-//credit to MDN Documentation for AudioContext training: https://developer.mozilla.org/en-US/docs/Web/API/AudioContext 
+// credit to MDN Documentation for AudioContext training: https://developer.mozilla.org/en-US/docs/Web/API/AudioContext 
+
 // credit to Joe Sullivan of http://joesul.li/van/react-and-web-audio/ for a helpful React implementation example, 
-// which uses Redux rather than default React state (and some now-unsafe lifecycle methods), which would be much more efficient, but I undertook this exercise to practice state without Redux.
+// which uses Redux rather than default React state (plus some now-unsafe lifecycle methods), and which would be much more efficient,
+// but I undertook this exercise to practice state without Redux.
 
 // credit to https://marcgg.com/blog/2016/11/01/javascript-audio/ for the note frequencies hash saved in noteValues
 
@@ -61,7 +63,7 @@ processButton(button){
   // console.log(popTable);
   // osc.setPeriodicWave(guitarTable);  
   
-  // create custom GainNode from the base audioContext
+  // create GainNode from the base audioContext
   let gainNode = this.audioContext.createGain();
 
   //set sound duration & set gain to gracefully die with an exponential or linear ramp 
@@ -77,7 +79,7 @@ processButton(button){
   //actually play oscillator sound
   osc.start(this.audioContext.currentTime);
 
-  // so full audioContext connect path is:
+  // so the full audioContext connect path is:
   // this.audioContext -> processButton.oscillator -> processButton.gainNode -> this.compressor -> this.audioContext.destination
 
   //actually stop sound after duration (replacing sloppy setTimeout method below)
@@ -97,7 +99,7 @@ processButton(button){
 }
 
 noteStringToFrequency(string) {
-  // map human-accessible note-decriptor in button.noteString to its frequency
+  // map human-accessible note-decriptor in button.noteString to its frequency from noteValues.json
 
   return noteValues[string];
 }

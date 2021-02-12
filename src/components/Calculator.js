@@ -23,13 +23,13 @@ class Calculator extends React.Component {
 
   }
 
-  startingState = {
+  //n.b. clearState doesn't change lastButton
+  clearState = {
     currentNumber: '',
     displayValue: '0',
     formulaArray: [],
     priorResult: '',
     priorString: '',
-    lastButton: '',
   }
 
   buttonsMap = [
@@ -199,7 +199,7 @@ class Calculator extends React.Component {
       category: "action",
       bootStyles: "btn-warning",
       bootPos: "order-first col-12",
-      noteString: 'B3',
+      noteString: 'C5',
     }
   ];
 
@@ -448,7 +448,7 @@ class Calculator extends React.Component {
       }
       case "clear": {
         //User story #7: At any time, pressing the clear button clears the input and output values, and returns the calculator to its initialized state; 0 should be shown in the element with the id of display.
-        this.setState(this.startingState);
+        this.setState(this.clearState);
         break;
       }
       case "equals": {

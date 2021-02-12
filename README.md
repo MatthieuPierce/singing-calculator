@@ -1,8 +1,3 @@
 # Singing calculator
 
-Singing Calculator page using Bootstrap 5 (beta) and React.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Singing Calculator is a simple, chunky, one-page calculator that uses Bootstrap 5, React, and the Web Audio API to create oscillator effects on the fly as you maths.

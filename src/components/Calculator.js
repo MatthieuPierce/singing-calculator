@@ -1,11 +1,8 @@
-import { findAllByDisplayValue } from '@testing-library/react';
+// import { findAllByDisplayValue } from '@testing-library/react';
 import React from 'react';
 import Button from './Button';
 import Display from './Display';
 import AudioComp from './AudioComp';
-
-
-
 
 class Calculator extends React.Component {
   constructor(props) {
@@ -43,7 +40,6 @@ class Calculator extends React.Component {
       category: "numeral",
       bootStyles: "btn-outline-primary col",
       bootPos: "order-2 col-4",
-      audioNum: 47,
       noteString: 'C4',
 
     },
@@ -54,7 +50,6 @@ class Calculator extends React.Component {
       category: "numeral",
       bootStyles: "btn-outline-primary col",
       bootPos: "order-2 col-4",
-      audioNum: 48,
       noteString: 'C#4',
 
     },
@@ -65,7 +60,6 @@ class Calculator extends React.Component {
       category: "numeral",
       bootStyles: "btn-outline-primary col",
       bootPos: "order-2 col-4",
-      audioNum: 49,
       noteString: 'D4',
 
     },
@@ -76,7 +70,6 @@ class Calculator extends React.Component {
       category: "numeral",
       bootStyles: "btn-outline-primary col",
       bootPos: "order-2 col-4",
-      audioNum: 44,
       noteString: 'D5',
 
     },
@@ -87,7 +80,6 @@ class Calculator extends React.Component {
       category: "numeral",
       bootStyles: "btn-outline-primary col",
       bootPos: "order-2 col-4",
-      audioNum: 45,
       noteString: 'D#4',
 
     },
@@ -98,7 +90,6 @@ class Calculator extends React.Component {
       category: "numeral",
       bootStyles: "btn-outline-primary col",
       bootPos: "order-2 col-4",
-      audioNum: 46,
       noteString: 'E4',
 
     },
@@ -109,7 +100,6 @@ class Calculator extends React.Component {
       category: "numeral",
       bootStyles: "btn-outline-primary",
       bootPos: "order-2 col-4",
-      audioNum: 41,
       noteString: 'E5',
 
     },
@@ -120,7 +110,6 @@ class Calculator extends React.Component {
       category: "numeral",
       bootStyles: "btn-outline-primary",
       bootPos: "order-2 col-4",
-      audioNum: 42,
       noteString: 'F4',
 
     },
@@ -131,7 +120,6 @@ class Calculator extends React.Component {
       category: "numeral",
       bootStyles: "btn-outline-primary",
       bootPos: "order-2 col-4",
-      audioNum: 43,
       noteString: 'F#4',
 
     },
@@ -142,7 +130,6 @@ class Calculator extends React.Component {
       category: "numeral",
       bootStyles: "btn-outline-primary",
       bootPos: "order-2 col-6",
-      audioNum: 40,
       noteString: 'G4',
     },
     {
@@ -152,7 +139,6 @@ class Calculator extends React.Component {
       category: "action",
       bootStyles: "btn-outline-secondary",
       bootPos: "order-3 col-2",
-      audioNum: 39,
       noteString: 'G5',
 
     },
@@ -163,7 +149,6 @@ class Calculator extends React.Component {
       category: "operator",
       bootStyles: "btn-outline-secondary",
       bootPos: "col-6",
-      audioNum: 51,
       noteString: 'G#3',
 
     },
@@ -174,7 +159,6 @@ class Calculator extends React.Component {
       category: "operator",
       bootStyles: "btn-outline-secondary",
       bootPos: "col-6",
-      audioNum: 52,
       noteString: 'A3',
 
     },
@@ -185,7 +169,6 @@ class Calculator extends React.Component {
       category: "operator",
       bootStyles: "btn-outline-secondary",
       bootPos: "col-6",
-      audioNum: 53,
       noteString: 'A4',
 
     },
@@ -196,7 +179,6 @@ class Calculator extends React.Component {
       category: "operator",
       bootStyles: "btn-outline-secondary",
       bootPos: "col-6",
-      audioNum: 54,
       noteString: 'A#3',
 
     },
@@ -208,7 +190,6 @@ class Calculator extends React.Component {
       category: "action",
       bootStyles: "btn-secondary",
       bootPos: "col-4 order-last",
-      audioNum: 55,
       noteString: 'C4',
     },
     {
@@ -218,7 +199,6 @@ class Calculator extends React.Component {
       category: "action",
       bootStyles: "btn-warning",
       bootPos: "order-first col-12",
-      audioNum: 56,
       noteString: 'B3',
     }
   ];
@@ -228,9 +208,6 @@ class Calculator extends React.Component {
     this.setState({
       lastButton: clickedButton
     })
-    // console.log(`forClick sees clickedButton as:`);
-    // console.log(clickedButton);
-    // console.log(`forClick thinks this is the data: ${data}`);
     switch (clickedButton.category) {
       case "numeral":
         this.handleNumeral(clickedButton);
@@ -283,7 +260,7 @@ class Calculator extends React.Component {
         });
       }
       
-      //ELSE IF state.priorResult is not an empty string, user has chosen to act on the prior result per 
+      //ELSE IF state.priorResult is not an empty string, user has chosen to act on a prior result per 
       // User Story #14: Pressing an operator immediately following = should start a new calculation that operates on the result of the previous evaluation.
       // move priorResult into the formula array followed by this operator, and clear out state.priorResult and priorString
       else if (this.state.priorResult !== '') {
@@ -304,7 +281,7 @@ class Calculator extends React.Component {
           formulaArray: [...this.state.formulaArray, clickedButton],
         });
       } 
-      // ELSE the currentNumber has been built to some extent, and this operand singnals the end of currentNumber-- currentNumber needs to be pushed to the formulaArray as a string (for later processing when equals is pressed); 
+      // ELSE the currentNumber has been built to some extent, and this operand signals the end of currentNumber-- currentNumber needs to be pushed to the formulaArray as a string (for later processing when equals is pressed); 
       //followed by pushing the operator itself to formulaArray
       else {
         this.setState({
@@ -329,8 +306,8 @@ class Calculator extends React.Component {
     let fullFormulaArray = (this.state.currentNumber === '')
                             ? [...this.state.formulaArray, "0"]
                             : [...this.state.formulaArray, this.state.currentNumber];
-    console.log("fullFormulaArray:");
-    console.log(fullFormulaArray);
+    // console.log("fullFormulaArray:");
+    // console.log(fullFormulaArray);
 
     //reduce/filter through the formula array and remove any surplus consecutive operations per
     // User Story #13: If 2 or more operators are entered consecutively, the operation performed should be the last operator entered
@@ -402,8 +379,8 @@ class Calculator extends React.Component {
     );
     
     // opFilteredArray is now only Numbers and objects representing valid operands 
-    console.log("opFilteredArray:");
-    console.log(opFilteredArray);
+    // console.log("opFilteredArray:");
+    // console.log(opFilteredArray);
 
     // reduce the opFilteredArray into a single string so we can evaluate it all at once later
     let filteredForString = [...opFilteredArray].reduce(
@@ -411,11 +388,13 @@ class Calculator extends React.Component {
         switch (typeof curr) {
           case "number": {
             return `${acc} ${curr}`;
-            break;
           }
           case "object": {
             return `${acc} ${curr.formulaValue}`;
           }
+          default:
+            throw "unexpected element in opFilteredArray";
+            break; 
         }
       }, ''
     );
@@ -430,7 +409,6 @@ class Calculator extends React.Component {
 
     // that evaluation is the final answer, so supply it to state's display, store answer in priorAnswer, save the filteredForString in priorString  and reset rest of state
     let answer = stringParse(filteredForString);
-    console.log(`answer: ${answer}`);
 
     this.setState({
       currentNumber: '',
@@ -439,7 +417,6 @@ class Calculator extends React.Component {
       priorResult: `${answer}`,
       priorString: filteredForString,
     });
-   
   }
 
   handleAction(clickedButton){
@@ -456,7 +433,7 @@ class Calculator extends React.Component {
           // check that no other decimals exist in the current value. If there are, break without changing anything.
           let regex = new RegExp(/\./, 'i')
           if (regex.test(this.state.currentNumber)) {
-            console.log("regex test for decimal triggered");
+            // console.log("regex test for decimal triggered");
             return undefined;
             break;
           } else {
@@ -479,7 +456,7 @@ class Calculator extends React.Component {
         break;
       }
       default:
-        console.log(`unexpected actionHandled for ${clickedButton.id}`);
+        throw `unexpected actionHandled for ${clickedButton.id}`;
         break;
     } 
   }
@@ -496,7 +473,7 @@ class Calculator extends React.Component {
           priorResult={this.state.priorResult}
           priorString={this.state.priorString}
           />
-          <div className="row row-cols-4 g-1 mx-2 my-3 justify-content-md-center">
+          <div className="row row-cols-4 g-1 mx-2 my-2 justify-content-md-center">
             {this.buttonsMap.map(butt => {
               return (
                 <Button 

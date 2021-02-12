@@ -1,28 +1,27 @@
 import React from 'react';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 
-
-
 class Button extends React.Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.buttonDiv = React.createRef();
     this.focusOnKeypress = this.focusOnKeypress.bind(this);
+    this.buttonBase = `btn btn-lg w-100 py-1 fs-1`;
   }
 
   handleClick() {
-    // console.log(this.props)
-    // console.log(`handleClick activated for ${this.props.btnId}`);
     this.props.forClick(this.props.btnId)
   }
 
   focusOnKeypress() {
     this.buttonDiv.current.focus();
-    this.buttonDiv.current.className = `btn btn-lg w-100 px-1 py-2 fs-1 ${this.props.bootStyles} active`;
+    //briefly give the current button the "active" class and then remove it on a timer
+    //to simulate hover/focus for keypress
+    this.buttonDiv.current.className = `${this.buttonBase} ${this.props.bootStyles} active`;
     const styleTimer = () => {
       setTimeout( () => {
-        this.buttonDiv.current.className = `btn btn-lg w-100 px-1 py-2 fs-1 ${this.props.bootStyles}`;
+        this.buttonDiv.current.className = `${this.buttonBase} ${this.props.bootStyles}`;
       }, 100);
     }
     const timerId = styleTimer();
@@ -31,18 +30,16 @@ class Button extends React.Component {
     }
   }
 
-
   render() {
     const { btnId, displaySymbol, bootStyles, bootPos, formulaValue } = this.props;
     const keysToHandle = (formulaValue === "=")
                           ?  [formulaValue, "enter"]
                           : [formulaValue];
-
     return (
       <div className={`outer-button-div col 
                       ${bootPos}`}>
         <div
-        className={`btn btn-lg w-100 px-1 py-2 fs-1 ${bootStyles}`}
+        className={`${this.buttonBase} ${bootStyles}`}
         id={btnId}
         role="button"
         value={displaySymbol}
@@ -52,9 +49,8 @@ class Button extends React.Component {
         <KeyboardEventHandler
           handleKeys={keysToHandle}
           // handleFocusableElements={true}
-          onKeyEvent={(key, e) => {
-            
-            // console.log(`set focus and handleClick upon keydown event of ${key}`);
+          onKeyEvent={(key, e) => {            
+            // console.log(`simulate focus and handleClick upon keydown event of ${key}`);
             this.focusOnKeypress();
             this.handleClick();
           }} />

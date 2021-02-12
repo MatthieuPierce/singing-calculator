@@ -2,7 +2,7 @@ import React from 'react';
 
 const Display = ({ currentNumber, displayValue, formulaArray, priorResult, priorString}) => {
   return (
-    <div className="text-end border px-3 py-1 mx-2 row" >
+    <div className="text-end border px-3 mx-2 row" >
         <ul className="list-inline col-12 fs-4">
           {/* placeholder 0 for initialState: */}
           {
